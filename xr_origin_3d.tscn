@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d1648niu2f8ag"]
+[gd_scene load_steps=12 format=3 uid="uid://d1648niu2f8ag"]
 
 [ext_resource type="PackedScene" uid="uid://bq86r4yll8po" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_fullglove_low.tscn" id="1_yu5ic"]
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_2nlyf"]
@@ -7,27 +7,23 @@
 [ext_resource type="PackedScene" uid="uid://kyhaogt0a4q8" path="res://addons/godot-xr-tools/functions/movement_flight.tscn" id="4_o2y4m"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="4_rhvbn"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="7_nkf4f"]
-[ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="7_u055a"]
-[ext_resource type="Script" uid="uid://ck4yn3hxuobj7" path="res://addons/godot-xr-tools/player/player_body.gd" id="8_u055a"]
+[ext_resource type="Script" uid="uid://ki2nby8m7j4b" path="res://ray_cast_3d.gd" id="7_o2y4m"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nkf4f"]
 direction = Vector3(0, 0, -1)
-spread = 1.5
-initial_velocity_min = 41.18
-initial_velocity_max = 41.18
-gravity = Vector3(0, -3, 0)
+spread = 0.0
+initial_velocity_min = 15.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, -2, 0)
 damping_min = 0.1
 damping_max = 0.2
-color = Color(0, 0, 1, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lquwl"]
-transparency = 1
-albedo_color = Color(0, 0.4509804, 1, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u055a"]
+albedo_color = Color(0, 0.34117648, 1, 1)
 refraction_enabled = true
-grow_amount = 3.084
 
-[sub_resource type="SphereMesh" id="SphereMesh_u055a"]
-material = SubResource("StandardMaterial3D_lquwl")
+[sub_resource type="SphereMesh" id="SphereMesh_kmt6x"]
+material = SubResource("StandardMaterial3D_u055a")
 radius = 0.25
 height = 0.5
 
@@ -63,20 +59,19 @@ step_turn_angle = 45.0
 
 [node name="FunctionPickup" parent="RightHand/RightHand2" instance=ExtResource("3_rhvbn")]
 
-[node name="FunctionPointer" parent="RightHand/RightHand2" instance=ExtResource("7_u055a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 0.05, -0.1)
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="RightHand/RightHand2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, 0, 0)
+[node name="WaterParticles" type="GPUParticles3D" parent="RightHand/RightHand2"]
 emitting = false
 amount = 1000
-lifetime = 2.0
+lifetime = 5.0
 process_material = SubResource("ParticleProcessMaterial_nkf4f")
-draw_pass_1 = SubResource("SphereMesh_u055a")
+draw_pass_1 = SubResource("SphereMesh_kmt6x")
 
-[node name="@CharacterBody3D@57225" type="CharacterBody3D" parent="." groups=["player_body"] instance=ExtResource("7_nkf4f")]
-process_priority = -100
-process_physics_priority = -100
-collision_layer = 524288
-collision_mask = 1023
-script = ExtResource("8_u055a")
+[node name="RayCast3D" type="RayCast3D" parent="RightHand/RightHand2"]
+transform = Transform3D(1, 0, 0, 0, -8.742278e-07, -1, 0, 20, -4.371139e-08, 0, 0, 0)
+script = ExtResource("7_o2y4m")
+
+[node name="Debounce_Timer" type="Timer" parent="RightHand/RightHand2/RayCast3D"]
+
+[node name="@CharacterBody3D@57225" parent="." instance=ExtResource("7_nkf4f")]
+
+[connection signal="timeout" from="RightHand/RightHand2/RayCast3D/Debounce_Timer" to="RightHand/RightHand2/RayCast3D" method="_on_debounce_timer_timeout"]

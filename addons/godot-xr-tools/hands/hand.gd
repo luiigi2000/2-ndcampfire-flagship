@@ -171,10 +171,11 @@ func _physics_process(_delta: float) -> void:
 		var trigger : float = _controller.get_float(trigger_action)
 		if _controller.tracker == "right_hand":
 			#shoot water
+			var water_particles = $"../../RightHand/RightHand2/WaterParticles"
 			if trigger > 0.8 and grip > 0.8:
-					$"../../RightHand/RightHand2/GPUParticles3D".emitting = true
+				water_particles.emitting = true
 			else:
-				$"../../RightHand/RightHand2/GPUParticles3D".emitting = false
+				water_particles.emitting = false
 
 		# Allow overriding of grip and trigger
 		if _force_grip >= 0.0: grip = _force_grip
