@@ -9,13 +9,14 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if is_colliding() and water_particles.emitting and get_collider().name == "Fire" and putout_debounce:
-		putout_debounce = false
-		$Debounce_Timer.start()
-		if get_collider().get_node("Fire_Particles").amount > 1:
-			get_collider().get_node("Fire_Particles").amount -= 1
-		else:
-			get_collider().queue_free()
+	if get_collider() != null:
+		if water_particles.emitting and get_collider().name == "Fire" and putout_debounce:
+			putout_debounce = false
+			$Debounce_Timer.start()
+			if get_collider().get_node("Fire_Particles").amount > 1:
+				get_collider().get_node("Fire_Particles").amount -= 1
+			else:
+				get_collider().queue_free()
 
 
 func _on_debounce_timer_timeout() -> void:
