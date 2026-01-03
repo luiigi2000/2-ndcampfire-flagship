@@ -68,6 +68,7 @@ var _target_overrides := []
 # Current target (controller or override)
 var _target : Node3D
 
+var _right_trigger_pressed := false
 
 ## Pose-override class
 class PoseOverride:
@@ -168,6 +169,12 @@ func _physics_process(_delta: float) -> void:
 	if _controller:
 		var grip : float = _controller.get_float(grip_action)
 		var trigger : float = _controller.get_float(trigger_action)
+		if _controller.tracker == "right_hand":
+			#shoot water
+			if trigger > 0.8 and grip > 0.8:
+					$"../../RightHand/RightHand2/GPUParticles3D".emitting = true
+			else:
+				$"../../RightHand/RightHand2/GPUParticles3D".emitting = false
 
 		# Allow overriding of grip and trigger
 		if _force_grip >= 0.0: grip = _force_grip
@@ -503,3 +510,4 @@ static func _find_child(node : Node, type : String) -> Node:
 
 	# No child found matching type
 	return null
+	

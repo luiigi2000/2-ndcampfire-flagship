@@ -25,8 +25,7 @@ points = PackedVector3Array(-1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_1bvp3"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7mycd"]
-points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+[sub_resource type="BoxShape3D" id="BoxShape3D_7mycd"]
 
 [node name="main" type="Node3D"]
 script = ExtResource("1_0xm2m")
@@ -62,7 +61,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09396362, 0.83161366, -0.9
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0969919, 0.31186226, -1.1409441)
 mesh = SubResource("BoxMesh_1bvp3")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Table/MeshInstance3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Table/MeshInstance3D/StaticBody3D"]
-shape = SubResource("ConvexPolygonShape3D_7mycd")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0969919, 0.31186226, -1.1409441)
+shape = SubResource("BoxShape3D_7mycd")
